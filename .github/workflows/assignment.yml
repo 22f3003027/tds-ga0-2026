@@ -1,0 +1,12 @@
+name: GA0 assignment
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify 22f3003027@ds.study.iitm.ac.in
+        run: echo "Hello from the GA0 assignment"
