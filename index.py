@@ -1,11 +1,15 @@
 """GA0 Q25 telemetry API. Deploy this directory to Vercel."""
 import math
 import os
+import json
 from statistics import fmean
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from data import TELEMETRY
+try:
+    from data import TELEMETRY
+except ModuleNotFoundError:
+    TELEMETRY = json.loads(os.environ.get('TELEMETRY_JSON', '[]'))
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=['*'],
@@ -49,4 +53,4 @@ def analytics(request: AnalyticsRequest):
 
 @app.get('/')
 def health():
-    return {'status': 'ok', 'endpoint': '/api/latency'}
+    return {'status': 'ok', 'endpoint': '/api/latency', 'record_count': len(TELEMETRY)}
